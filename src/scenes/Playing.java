@@ -64,6 +64,6 @@ public class Playing extends GameScene implements SceneMethods{
 
     @Override
     public void mouseReleased(int x, int y) {
-
+        bottomBar.mouseReleased(x, y);
     }
 }

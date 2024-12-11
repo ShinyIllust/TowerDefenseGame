@@ -50,13 +50,13 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
     public void mouseReleased(MouseEvent e) {
         switch(GameStates.gameState){
             case PLAYING:
-                game.getPlaying().mousePressed(e.getX(), e.getY());
+                game.getPlaying().mouseReleased(e.getX(), e.getY());
                 break;
             case MENU:
                 game.getMenu().mouseReleased(e.getX(), e.getY());
                 break;
             case SETTINGS:
-                game.getSettings().mousePressed(e.getX(), e.getY());
+                game.getSettings().mouseReleased(e.getX(), e.getY());
                 break;
 
         }
