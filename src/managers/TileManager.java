@@ -1,5 +1,6 @@
 package managers;
 
+import helpz.LoadSave;
 import objects.Tile;
 
 import java.awt.image.BufferedImage;
@@ -20,6 +21,7 @@ public class TileManager {
 
     private void loadAtlas() {
 
+        atlas = LoadSave.getSpriteAtlas();
     }
 
     private void createTiles() {
