@@ -3,18 +3,32 @@ package ui;
 import java.awt.*;
 
 public class MyButton {
-    private int x, y, width, height;
+    public int x, y, width, height, id;
     private String text;
     private Rectangle bounds;
     private boolean mouseOver;
     private boolean mousePressed;
 
+    //Normal Buttons
     public MyButton(String text, int x, int y, int width, int height) {
         this.text = text;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.id = -1;
+
+        initBounds();
+    }
+
+    //Tile Buttons
+    public MyButton(String text, int x, int y, int width, int height, int id) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.id = id;
 
         initBounds();
     }
@@ -73,7 +87,19 @@ public class MyButton {
         this.mouseOver = mouseOver;
     }
 
+    public boolean isMouseOver(){
+        return mouseOver;
+    }
+
+    public boolean isMousePressed(){
+        return mousePressed;
+    }
+
     public Rectangle getBounds(){
         return bounds;
+    }
+
+    public int getId(){
+        return id;
     }
 }

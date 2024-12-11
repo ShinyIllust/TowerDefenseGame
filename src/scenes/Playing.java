@@ -3,6 +3,7 @@ package scenes;
 import helpz.LevelBuild;
 import main.Game;
 import managers.TileManager;
+import ui.BottomBar;
 import ui.MyButton;
 
 import java.awt.*;
@@ -15,21 +16,14 @@ public class Playing extends GameScene implements SceneMethods{
     private TileManager tileManager;
     private MyButton bMenu;
 
+    private BottomBar bottomBar;
+
     public Playing(Game game) {
         super(game);
 
         lvl = LevelBuild.getLevelData();
         tileManager = new TileManager();
-        initButtons();
-    }
-
-    private void initButtons() {
-        int w = 100;
-        int h = w / 3;
-        int x = 0;
-        int y = 0;
-
-        bMenu = new MyButton("Menu", x, y, w, h);
+        bottomBar = new BottomBar(0, 640, 640, 100, this);
     }
 
     @Override
@@ -40,41 +34,36 @@ public class Playing extends GameScene implements SceneMethods{
                 g.drawImage(tileManager.getSprite(id),x * 32, y * 32, null);
             }
         }
-        drawButtons(g);
+        bottomBar.draw(g);
     }
 
-    private void drawButtons(Graphics g) {
-        bMenu.draw(g);
+    public TileManager getTileManager(){
+        return tileManager;
     }
 
     @Override
     public void mouseClicked(int x, int y) {
-        if(bMenu.getBounds().contains(x, y)) {
-            SetGameState(MENU);
+        if(y>=640){
+            bottomBar.mouseClicked(x, y);
         }
     }
 
     @Override
     public void mouseMoved(int x, int y) {
-            bMenu.setMouseOver(false);
-            if(bMenu.getBounds().contains(x, y)){
-                bMenu.setMouseOver(true);
-            }
+        if(y>=640){
+            bottomBar.mouseMoved(x, y);
+        }
     }
 
     @Override
     public void mousePressed(int x, int y) {
-            if(bMenu.getBounds().contains(x,y)) {
-                bMenu.setMousePressed(true);
-            }
+        if(y>=640){
+            bottomBar.mousePressed(x, y);
+        }
     }
 
     @Override
     public void mouseReleased(int x, int y) {
-        resetButtons();
-    }
 
-    private void resetButtons() {
-        bMenu.resetBooleans();
     }
 }
