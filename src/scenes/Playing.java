@@ -1,8 +1,10 @@
 package scenes;
 
 import helpz.LevelBuild;
+import helpz.LoadSave;
 import main.Game;
 import managers.TileManager;
+import objects.Tile;
 import ui.BottomBar;
 import ui.MyButton;
 
@@ -15,6 +17,10 @@ public class Playing extends GameScene implements SceneMethods{
     private int[][] lvl;
     private TileManager tileManager;
     private MyButton bMenu;
+    private Tile selectedTile;
+    private int mouseX, mouseY;
+    private int lastTileX, lastTileY, lastTileId;
+    private boolean drawSelect = false;
 
     private BottomBar bottomBar;
 
@@ -24,6 +30,23 @@ public class Playing extends GameScene implements SceneMethods{
         lvl = LevelBuild.getLevelData();
         tileManager = new TileManager();
         bottomBar = new BottomBar(0, 640, 640, 100, this);
+
+        createDefaultLevel();
+        loadDefaultLevel();
+    }
+
+    private void loadDefaultLevel() {
+        lvl = LoadSave.getLevelData("new_level");
+
+    }
+
+    private void createDefaultLevel() {
+        int[] arr = new int[400];
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = 0;
+        }
+
+        LoadSave.createLevel("new_level", arr);
     }
 
     @Override
@@ -35,6 +58,18 @@ public class Playing extends GameScene implements SceneMethods{
             }
         }
         bottomBar.draw(g);
+        drawSelectedTile(g);
+    }
+
+    private void drawSelectedTile(Graphics g){
+        if(selectedTile != null && drawSelect){
+            g.drawImage(selectedTile.getSprite(), mouseX, mouseY, 32, 32, null);
+        }
+    }
+
+    public void setSelectedTile(Tile tile){
+        this.selectedTile = tile;
+        drawSelect = true;
     }
 
     public TileManager getTileManager(){
@@ -45,6 +80,24 @@ public class Playing extends GameScene implements SceneMethods{
     public void mouseClicked(int x, int y) {
         if(y>=640){
             bottomBar.mouseClicked(x, y);
+        } else {
+            changeTile(mouseX, mouseY);
+        }
+    }
+
+    private void changeTile(int x, int y) {
+        if (selectedTile != null) {
+            int tileX = x / 32;
+            int tileY = y / 32;
+
+            if(lastTileX == tileX && lastTileY == tileY && lastTileId == selectedTile.getId()){
+                return;
+            }
+            lastTileX = tileX;
+            lastTileY = tileY;
+            lastTileId = selectedTile.getId();
+
+            lvl[tileY][tileX] = selectedTile.getId();
         }
     }
 
@@ -52,6 +105,11 @@ public class Playing extends GameScene implements SceneMethods{
     public void mouseMoved(int x, int y) {
         if(y>=640){
             bottomBar.mouseMoved(x, y);
+            drawSelect = false;
+        } else {
+            drawSelect = true;
+            mouseX = (x / 32) * 32;
+            mouseY = (y / 32) * 32;
         }
     }
 
@@ -65,5 +123,18 @@ public class Playing extends GameScene implements SceneMethods{
     @Override
     public void mouseReleased(int x, int y) {
         bottomBar.mouseReleased(x, y);
+    }
+
+    @Override
+    public void mouseDragged(int x, int y) {
+        if(y >= 640){
+
+        } else {
+            changeTile(x, y);
+        }
+    }
+
+    public void saveLevel() {
+        LoadSave.saveLevel("new_level", lvl);
     }
 }
