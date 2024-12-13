@@ -16,7 +16,6 @@ public class Playing extends GameScene implements SceneMethods{
 
     private int[][] lvl;
     private TileManager tileManager;
-    private MyButton bMenu;
     private Tile selectedTile;
     private int mouseX, mouseY;
     private int lastTileX, lastTileY, lastTileId;
