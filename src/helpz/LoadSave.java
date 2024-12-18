@@ -11,7 +11,7 @@ public class LoadSave {
 
 
     public static BufferedImage getSpriteAtlas(){
-        BufferedImage img = null;
+        BufferedImage img;
         InputStream is = LoadSave.class.getClassLoader().getResourceAsStream("spriteatlas.png");
 
         try {
